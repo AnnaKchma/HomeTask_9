@@ -26,7 +26,9 @@ public class MyArrayList<T> {
     }
 
     public void clear() {
-        array = new Object[DEFAULT_CAPACITY];
+        for (int i = 0; i < size; i++) {
+            array[i] = null;
+        }
         size = 0;
     }
 
@@ -48,7 +50,7 @@ public class MyArrayList<T> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
     }
 }

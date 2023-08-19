@@ -16,33 +16,27 @@ public class MyLinkedList<T> {
 
         if (head == null) {
             head = newNode;
-            tail = newNode;
         } else {
             tail.next = newNode;
-            newNode.previous = tail;
-            tail = newNode;
+            newNode.prev = tail;
         }
-
+        tail = newNode;
         size++;
     }
 
     public void remove(int index) {
         checkIndex(index);
-
         Node<T> nodeToRemove = getNode(index);
-
         if (nodeToRemove == head) {
             head = nodeToRemove.next;
         } else {
-            nodeToRemove.previous.next = nodeToRemove.next;
+            nodeToRemove.prev.next = nodeToRemove.next;
         }
-
         if (nodeToRemove == tail) {
-            tail = nodeToRemove.previous;
+            tail = nodeToRemove.prev;
         } else {
-            nodeToRemove.next.previous = nodeToRemove.previous;
+            nodeToRemove.next.prev = nodeToRemove.prev;
         }
-
         size--;
     }
 
@@ -58,40 +52,44 @@ public class MyLinkedList<T> {
 
     public T get(int index) {
         checkIndex(index);
-
         Node<T> node = getNode(index);
         return node.value;
     }
 
-    private Node<T> getNode(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        Node<T> currentNode = head;
-
-        for (int i = 0; i < index; i++) {
-            currentNode = currentNode.next;
-        }
-
-        return currentNode;
+    private boolean isEmpty() {
+        return size == 0;
     }
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
+    }
+
+    private Node<T> getNode(int index) {
+        Node<T> currentNode = head;
+        for (int i = 0; i < index; i++) {
+            currentNode = currentNode.next;
+        }
+        return currentNode;
     }
 
     private static class Node<T> {
         private final T value;
-        private Node<T> previous;
+        private Node<T> prev;
         private Node<T> next;
 
         public Node(T value) {
             this.value = value;
-            this.previous = null;
+            this.prev = null;
             this.next = null;
         }
     }
 }
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 package org.example;
 
-class MyStack<T> {
+public class MyStack<T> {
     private Object[] array;
     private int size;
     private static final int DEFAULT_CAPACITY = 10;
@@ -21,7 +21,6 @@ class MyStack<T> {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
-
         for (int i = index; i < size - 1; i++) {
             array[i] = array[i + 1];
         }
@@ -60,4 +59,3 @@ class MyStack<T> {
         array = newArray;
     }
 }
-

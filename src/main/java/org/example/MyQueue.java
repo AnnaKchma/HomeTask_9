@@ -1,34 +1,33 @@
 package org.example;
 
-class MyQueue<T> {
-    private Node<T> head;
-    private Node<T> tail;
+public class MyQueue<T> {
+    private Object[] array;
     private int size;
+    private int front;
+    private int rear;
+    private static final int DEFAULT_CAPACITY = 10;
 
     public MyQueue() {
-        head = null;
-        tail = null;
+        array = new Object[DEFAULT_CAPACITY];
         size = 0;
+        front = 0;
+        rear = -1;
     }
 
     public void add(T value) {
-        Node<T> newNode = new Node<>(value);
-
-        if (tail == null) {
-            head = newNode;
-            tail = newNode;
-        } else {
-            tail.next = newNode;
-            tail = newNode;
+        if (size == array.length) {
+            resizeArray();
         }
-
+        rear = (rear + 1) % array.length;
+        array[rear] = value;
         size++;
     }
 
     public void clear() {
-        head = null;
-        tail = null;
+        array = new Object[DEFAULT_CAPACITY];
         size = 0;
+        front = 0;
+        rear = -1;
     }
 
     public int size() {
@@ -36,36 +35,34 @@ class MyQueue<T> {
     }
 
     public T peek() {
-        if (head == null) {
+        if (isEmpty()) {
             return null;
         }
-        return head.value;
+        return (T) array[front];
     }
 
     public T poll() {
-        if (head == null) {
+        if (isEmpty()) {
             return null;
         }
-
-        T value = head.value;
-        head = head.next;
+        T value = (T) array[front];
+        front = (front + 1) % array.length;
         size--;
-
-        if (head == null) {
-            tail = null;
-        }
-
         return value;
     }
 
-    private static class Node<T> {
-        private final T value;
-        private Node<T> next;
+    private boolean isEmpty() {
+        return size == 0;
+    }
 
-        public Node(T value) {
-            this.value = value;
-            this.next = null;
+    private void resizeArray() {
+        int newCapacity = array.length * 2;
+        Object[] newArray = new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newArray[i] = array[(front + i) % array.length];
         }
+        array = newArray;
+        front = 0;
+        rear = size - 1;
     }
 }
-
